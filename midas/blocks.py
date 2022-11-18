@@ -76,6 +76,7 @@ def _make_scratch(in_shape, out_shape, groups=1, expand=False):
 
 
 def _make_pretrained_efficientnet_lite3(use_pretrained, exportable=False):
+    torch.hub._validate_not_a_forked_repo=lambda a,b,c: True
     efficientnet = torch.hub.load(
         "rwightman/gen-efficientnet-pytorch",
         "tf_efficientnet_lite3",

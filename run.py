@@ -96,7 +96,7 @@ def run(input_path, output_path, model_path, model_type="large", optimize=True):
     model.to(device)
 
     # get input
-    img_names = glob.glob(os.path.join(input_path, "*"))
+    img_names = glob.glob(os.path.join(input_path, "*"))[:100]
     num_images = len(img_names)
 
     # create output folder
@@ -136,6 +136,7 @@ def run(input_path, output_path, model_path, model_type="large", optimize=True):
         filename = os.path.join(
             output_path, os.path.splitext(os.path.basename(img_name))[0]
         )
+        # MARK: the output space is disparity space not the depth
         utils.write_depth(filename, prediction, bits=2)
 
     print("finished")
@@ -185,4 +186,5 @@ if __name__ == "__main__":
     torch.backends.cudnn.benchmark = True
 
     # compute depth maps
+    assert os.path.exists(args.model_weights), f"{args.model_weights} not found!!"
     run(args.input_path, args.output_path, args.model_weights, args.model_type, args.optimize)
