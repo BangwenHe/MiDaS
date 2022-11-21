@@ -77,12 +77,29 @@ def _make_scratch(in_shape, out_shape, groups=1, expand=False):
 
 def _make_pretrained_efficientnet_lite3(use_pretrained, exportable=False):
     torch.hub._validate_not_a_forked_repo=lambda a,b,c: True
-    efficientnet = torch.hub.load(
-        "rwightman/gen-efficientnet-pytorch",
-        "tf_efficientnet_lite3",
-        pretrained=use_pretrained,
-        exportable=exportable
-    )
+    
+    import os
+    github = "rwightman/gen-efficientnet-pytorch"
+    repo_owner, repo_name, branch = torch.hub._parse_repo_info(github)
+    cache_dir = os.path.join(torch.hub.get_dir(), '_'.join([repo_owner, repo_name, branch.replace('/', '_')]))
+    print(f"Using cache found in {cache_dir}")
+
+    if os.path.exists(cache_dir):
+        efficientnet = torch.hub.load(
+            cache_dir,
+            "tf_efficientnet_lite3",
+            source='local',
+            pretrained=use_pretrained,
+            exportable=exportable
+        )
+    else:
+        efficientnet = torch.hub.load(
+            github,
+            "tf_efficientnet_lite3",
+            pretrained=use_pretrained,
+            exportable=exportable
+        )
+
     return _make_efficientnet_backbone(efficientnet)
 
 

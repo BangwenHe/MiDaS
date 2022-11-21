@@ -162,7 +162,7 @@ if __name__ == "__main__":
 
     parser.add_argument('-t', '--model_type', 
         default='dpt_large',
-        help='model type: dpt_large, dpt_hybrid, midas_v21_large or midas_v21_small'
+        help='model type: dpt_large, dpt_hybrid, midas_v21 or midas_v21_small'
     )
 
     parser.add_argument('--optimize', dest='optimize', action='store_true')
