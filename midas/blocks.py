@@ -80,8 +80,9 @@ def _make_pretrained_efficientnet_lite3(use_pretrained, exportable=False):
     
     import os
     github = "rwightman/gen-efficientnet-pytorch"
-    repo_owner, repo_name, branch = torch.hub._parse_repo_info(github)
-    cache_dir = os.path.join(torch.hub.get_dir(), '_'.join([repo_owner, repo_name, branch.replace('/', '_')]))
+    repo_owner, repo_name = github.split('/')
+    branch = 'master'
+    cache_dir = os.path.join(torch.hub.get_dir(), '_'.join([repo_owner, repo_name, branch]))
     print(f"Using cache found in {cache_dir}")
 
     if os.path.exists(cache_dir):
